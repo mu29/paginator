@@ -22,7 +22,7 @@ public class PagingRecyclerView extends FrameLayout {
         void onPaginate(int page);
     }
 
-    public int page = 0;
+    public int page = 1;
     public int itemsPerPage = 20;
 
     private OnPaginateListener paginateListener;
@@ -186,6 +186,8 @@ public class PagingRecyclerView extends FrameLayout {
      */
     public void setOnPaginateListener(OnPaginateListener paginateListener) {
         this.paginateListener = paginateListener;
+        paginateListener.onPaginate(++page);
+        showLoading();
     }
 
     /**
