@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="PagingRecyclerView">
-        <attr name="color" format="color"/>
-        <attr name="clipToPadding" format="boolean"/>
+        <attr name="progressColor" format="reference"/>
+        <attr name="innerPadding" format="dimension"/>
+        <attr name="innerPaddingTop" format="dimension"/>
+        <attr name="innerPaddingBottom" format="dimension"/>
+        <attr name="innerPaddingStart" format="dimension"/>
+        <attr name="innerPaddingEnd" format="dimension"/>
+        <attr name="innerClipToPadding" format="boolean"/>
     </declare-styleable>
 </resources>

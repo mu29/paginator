@@ -10,13 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 /**
  * @author InJung Chung
  */
-public class PagingRecyclerView extends FrameLayout {
+public class PagingRecyclerView extends LinearLayout {
 
     public interface OnPaginateListener {
         void onPaginate(int page);
@@ -41,7 +41,8 @@ public class PagingRecyclerView extends FrameLayout {
             int totalItemCount = recyclerView.getAdapter() != null ? recyclerView.getAdapter().getItemCount() : 0;
             int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
 
-            if (lastVisibleItemPosition + 1 >= itemsPerPage * (page + 1)) {
+            // Hide progress bar if not reach to bottom
+            if (lastVisibleItemPosition + 1 < totalItemCount) {
                 hideLoading();
                 return;
             }
@@ -53,6 +54,11 @@ public class PagingRecyclerView extends FrameLayout {
                 }
 
                 paginateListener.onPaginate(++page);
+
+                if (lastVisibleItemPosition + 1 < totalItemCount) {
+                    hideLoading();
+                    return;
+                }
 
                 // Check if needs to show progress bar
                 if (lastVisibleItemPosition == totalItemCount - 1) {
@@ -132,11 +138,9 @@ public class PagingRecyclerView extends FrameLayout {
 
         recyclerView = view.findViewById(R.id.recycler_view);
         progressBar = view.findViewById(R.id.progress_view);
-
-        bind();
     }
 
-    private void bind() {
+    public void bind() {
         recyclerView.addOnScrollListener(pagingScrollListener);
         if (recyclerView.getAdapter() != null) {
             recyclerView.getAdapter().registerAdapterDataObserver(dataObserver);
@@ -157,10 +161,19 @@ public class PagingRecyclerView extends FrameLayout {
      */
     private void setAttributes(@Nullable AttributeSet attrs) {
         TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable.PagingRecyclerView);
-        int color = attributes.getColor(R.styleable.PagingRecyclerView_color, 0);
-        boolean clipToPadding = attributes.getBoolean(R.styleable.PagingRecyclerView_clipToPadding, false);
-        setColor(color);
-        setClipToPadding(clipToPadding);
+        boolean clipToPadding = attributes.getBoolean(R.styleable.PagingRecyclerView_innerClipToPadding, false);
+        int color = attributes.getResourceId(R.styleable.PagingRecyclerView_progressColor, 0);
+        int padding = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPadding, 0);
+        int paddingTop = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPaddingTop, padding);
+        int paddingBottom = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPaddingBottom, padding);
+        int paddingStart = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPaddingStart, padding);
+        int paddingEnd = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPaddingEnd, padding);
+
+        if (color != 0) {
+            setProgressColor(color);
+        }
+        setInnerClipToPadding(clipToPadding);
+        setInnerPadding(paddingStart, paddingTop, paddingEnd, paddingBottom);
         attributes.recycle();
     }
 
@@ -169,7 +182,7 @@ public class PagingRecyclerView extends FrameLayout {
      *
      * @param color ProgressBar color
      */
-    public void setColor(int color) {
+    public void setProgressColor(int color) {
         progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
     }
 
@@ -209,17 +222,23 @@ public class PagingRecyclerView extends FrameLayout {
      */
     public void setAdapter(RecyclerView.Adapter adapter) {
         recyclerView.setAdapter(adapter);
+        bind();
     }
 
-    @Override
-    public boolean getClipToPadding() {
-        return recyclerView.getClipToPadding();
+    public boolean getInnerClipToPadding() {
+        return recyclerView != null && recyclerView.getClipToPadding();
     }
 
-    @Override
-    public void setClipToPadding(boolean clipToPadding) {
-        super.setClipToPadding(clipToPadding);
-        recyclerView.setClipToPadding(clipToPadding);
+    public void setInnerClipToPadding(boolean clipToPadding) {
+        if (recyclerView != null) {
+            recyclerView.setClipToPadding(clipToPadding);
+        }
+    }
+
+    public void setInnerPadding(int left, int top, int right, int bottom) {
+        if (recyclerView != null) {
+            recyclerView.setPadding(left, top, right, bottom);
+        }
     }
 
     private void showLoading() {
