@@ -128,6 +128,7 @@ public class PagingRecyclerView extends FrameLayout {
     private void init() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.paging_recycler_view, this, false);
+        addView(view);
 
         recyclerView = view.findViewById(R.id.recycler_view);
         progressBar = view.findViewById(R.id.progress_view);
