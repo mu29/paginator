@@ -150,7 +150,7 @@ public class PagingRecyclerView extends FrameLayout {
     }
 
     /**
-     * Set ProgressBar color
+     * Setter for ProgressBar color
      *
      * @param attrs AttributeSet that includes color
      */
@@ -171,12 +171,30 @@ public class PagingRecyclerView extends FrameLayout {
     }
 
     /**
+     * Getter for paginateListener
+     *
+     * @return paginateListener
+     */
+    public OnPaginateListener getOnPaginateListener() {
+        return paginateListener;
+    }
+
+    /**
      * Setter for paginateListener attribute
      *
      * @param paginateListener OnPaginateListener instance
      */
     public void setOnPaginateListener(OnPaginateListener paginateListener) {
         this.paginateListener = paginateListener;
+    }
+
+    /**
+     * Getter for RecyclerView.Adapter
+     *
+     * @return RecyclerView's adapter
+     */
+    public RecyclerView.Adapter getAdapter() {
+        return recyclerView.getAdapter();
     }
 
     /**
