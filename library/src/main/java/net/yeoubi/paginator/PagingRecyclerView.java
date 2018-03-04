@@ -187,7 +187,7 @@ public class PagingRecyclerView extends FrameLayout {
      */
     public void setOnPaginateListener(OnPaginateListener paginateListener) {
         this.paginateListener = paginateListener;
-        paginateListener.onPaginate(++page);
+        paginateListener.onPaginate(page);
         showLoading();
     }
 
