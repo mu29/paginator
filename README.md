@@ -1,5 +1,7 @@
 # paginator
-The simplest way to make your recycler view paginable
+The simplest way to make your recycler view paginable.
+
+It will automatically detect if content loading is complete or not. You don't need to implement a method like `hasFinishLoading`!
 
 # Installation
 
