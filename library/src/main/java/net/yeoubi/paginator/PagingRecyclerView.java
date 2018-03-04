@@ -175,8 +175,17 @@ public class PagingRecyclerView extends FrameLayout {
      *
      * @param paginateListener OnPaginateListener instance
      */
-    public void setPaginateListener(OnPaginateListener paginateListener) {
+    public void setOnPaginateListener(OnPaginateListener paginateListener) {
         this.paginateListener = paginateListener;
+    }
+
+    /**
+     * Setter for RecyclerView Adapter attribute
+     *
+     * @param adapter RecyclerView adapter
+     */
+    public void setAdapter(RecyclerView.Adapter adapter) {
+        recyclerView.setAdapter(adapter);
     }
 
     private void showLoading() {
