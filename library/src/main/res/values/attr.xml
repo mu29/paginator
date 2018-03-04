@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="PagingRecyclerView">
         <attr name="color" format="color"/>
+        <attr name="clipToPadding" format="boolean"/>
     </declare-styleable>
 </resources>

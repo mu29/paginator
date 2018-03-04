@@ -158,7 +158,9 @@ public class PagingRecyclerView extends FrameLayout {
     private void setAttributes(@Nullable AttributeSet attrs) {
         TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable.PagingRecyclerView);
         int color = attributes.getColor(R.styleable.PagingRecyclerView_color, 0);
+        boolean clipToPadding = attributes.getBoolean(R.styleable.PagingRecyclerView_clipToPadding, false);
         setColor(color);
+        setClipToPadding(clipToPadding);
         attributes.recycle();
     }
 
@@ -207,6 +209,17 @@ public class PagingRecyclerView extends FrameLayout {
      */
     public void setAdapter(RecyclerView.Adapter adapter) {
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean getClipToPadding() {
+        return recyclerView.getClipToPadding();
+    }
+
+    @Override
+    public void setClipToPadding(boolean clipToPadding) {
+        super.setClipToPadding(clipToPadding);
+        recyclerView.setClipToPadding(clipToPadding);
     }
 
     private void showLoading() {
