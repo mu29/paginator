@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 /**
+ * RecyclerView with Pagination :)
+ *
  * @author InJung Chung
  */
 public class PagingRecyclerView extends LinearLayout {
@@ -129,7 +131,7 @@ public class PagingRecyclerView extends LinearLayout {
     }
 
     /**
-     * Initialize PagingRecyclerView layout and set references
+     * Initialize PagingRecyclerView layout and set references.
      */
     private void init() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -140,6 +142,9 @@ public class PagingRecyclerView extends LinearLayout {
         progressBar = view.findViewById(R.id.progress_view);
     }
 
+    /**
+     * Add scroll listener and data observer.
+     */
     public void bind() {
         recyclerView.addOnScrollListener(pagingScrollListener);
         if (recyclerView.getAdapter() != null) {
@@ -147,6 +152,9 @@ public class PagingRecyclerView extends LinearLayout {
         }
     }
 
+    /**
+     * Remove scroll listener and data observer.
+     */
     public void unbind() {
         recyclerView.removeOnScrollListener(pagingScrollListener);
         if (recyclerView.getAdapter() != null) {
@@ -155,9 +163,9 @@ public class PagingRecyclerView extends LinearLayout {
     }
 
     /**
-     * Setter for ProgressBar color
+     * Setter for view attributes.
      *
-     * @param attrs AttributeSet that includes color
+     * @param attrs AttributeSet that includes color, padding, and clipToPadding
      */
     private void setAttributes(@Nullable AttributeSet attrs) {
         TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable.PagingRecyclerView);
@@ -178,7 +186,7 @@ public class PagingRecyclerView extends LinearLayout {
     }
 
     /**
-     * Setter for color attribute
+     * Setter for progress color attribute
      *
      * @param color ProgressBar color
      */
@@ -207,28 +215,30 @@ public class PagingRecyclerView extends LinearLayout {
     }
 
     /**
-     * Getter for RecyclerView.Adapter
-     *
-     * @return RecyclerView's adapter
+     * Getter for RecyclerView's adapter.
      */
     public RecyclerView.Adapter getAdapter() {
         return recyclerView.getAdapter();
     }
 
     /**
-     * Setter for RecyclerView Adapter attribute
-     *
-     * @param adapter RecyclerView adapter
+     * Setter for RecyclerView's adapter attribute.
      */
     public void setAdapter(RecyclerView.Adapter adapter) {
         recyclerView.setAdapter(adapter);
         bind();
     }
 
+    /**
+     * Getter for RecyclerView's clipToPadding attribute.
+     */
     public boolean getInnerClipToPadding() {
         return recyclerView != null && recyclerView.getClipToPadding();
     }
 
+    /**
+     * Setter for RecyclerView's clipToPadding attribute.
+     */
     public void setInnerClipToPadding(boolean clipToPadding) {
         if (recyclerView != null) {
             recyclerView.setClipToPadding(clipToPadding);

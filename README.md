@@ -3,6 +3,12 @@ The simplest way to make your recycler view paginable.
 
 It will automatically detect if content loading is complete or not. You don't need to implement a method like `hasFinishLoading`!
 
+## Example
+
+<img src="etc/example.gif" width="400" />
+
+See full example [here](https://github.com/mu29/paginator/tree/master/example).
+
 # Installation
 
 Your top-level `build.gradle`:
@@ -18,9 +24,19 @@ allprojects {
 
 In module-level `build.gradle`:
 
-```
+```gradle
 dependencies {
     implementation 'com.github.mu29:paginator:1.0'
+}
+```
+
+Because this library uses support library 27.1.0, you may get errors if you are already using a different version. In that case, exclude support library:
+
+```gradle
+dependencies {
+    implementation ('com.github.mu29:paginator:1.0') {
+        exclude group: "com.android.support"
+    }
 }
 ```
 
@@ -72,4 +88,4 @@ InJung Chung / [@mu29](http://mu29.github.io/)
 
 ## License
 
-[MIT](https://github.com/mu29/rx-billing/blob/master/LICENSE)
+[MIT](https://github.com/mu29/paginator/blob/master/LICENSE)
