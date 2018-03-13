@@ -8,5 +8,6 @@
         <attr name="innerPaddingStart" format="dimension"/>
         <attr name="innerPaddingEnd" format="dimension"/>
         <attr name="innerClipToPadding" format="boolean"/>
+        <attr name="innerLayoutAnimation" format="reference"/>
     </declare-styleable>
 </resources>

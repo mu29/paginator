@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -176,9 +178,14 @@ public class PagingRecyclerView extends LinearLayout {
         int paddingBottom = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPaddingBottom, padding);
         int paddingStart = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPaddingStart, padding);
         int paddingEnd = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPaddingEnd, padding);
+        int layoutAnimation = attributes.getResourceId(R.styleable.PagingRecyclerView_innerLayoutAnimation, 0);
 
         if (color != 0) {
             setProgressColor(color);
+        }
+        if (layoutAnimation != 0) {
+            LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), layoutAnimation);
+            setLayoutAnimation(animation);
         }
         setInnerClipToPadding(clipToPadding);
         setInnerPadding(paddingStart, paddingTop, paddingEnd, paddingBottom);
