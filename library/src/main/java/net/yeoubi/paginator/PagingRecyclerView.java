@@ -185,7 +185,7 @@ public class PagingRecyclerView extends LinearLayout {
         }
         if (layoutAnimation != 0) {
             LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), layoutAnimation);
-            setLayoutAnimation(animation);
+            setInnerLayoutAnimation(animation);
         }
         setInnerClipToPadding(clipToPadding);
         setInnerPadding(paddingStart, paddingTop, paddingEnd, paddingBottom);
@@ -255,6 +255,12 @@ public class PagingRecyclerView extends LinearLayout {
     public void setInnerPadding(int left, int top, int right, int bottom) {
         if (recyclerView != null) {
             recyclerView.setPadding(left, top, right, bottom);
+        }
+    }
+
+    public void setInnerLayoutAnimation(LayoutAnimationController controller) {
+        if (recyclerView != null) {
+            recyclerView.setLayoutAnimation(controller);
         }
     }
 
