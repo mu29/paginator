@@ -29,7 +29,7 @@ public class PagingRecyclerView extends LinearLayout {
     public int page = 1;
     public int itemsPerPage = 20;
 
-    private OnPaginateListener paginateListener;
+    protected OnPaginateListener paginateListener;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
 
@@ -158,7 +158,7 @@ public class PagingRecyclerView extends LinearLayout {
      * Remove scroll listener and data observer.
      */
     public void unbind() {
-        recyclerView.removeOnScrollListener(pagingScrollListener);
+        recyclerView.clearOnScrollListeners();
         if (recyclerView.getAdapter() != null) {
             recyclerView.getAdapter().unregisterAdapterDataObserver(dataObserver);
         }
@@ -190,6 +190,15 @@ public class PagingRecyclerView extends LinearLayout {
         setInnerClipToPadding(clipToPadding);
         setInnerPadding(paddingStart, paddingTop, paddingEnd, paddingBottom);
         attributes.recycle();
+    }
+
+    /**
+     * Add onScrollListener to RecyclerView.
+     */
+    public void addOnScrollListener(RecyclerView.OnScrollListener listener) {
+        if (recyclerView != null) {
+            recyclerView.addOnScrollListener(listener);
+        }
     }
 
     /**
