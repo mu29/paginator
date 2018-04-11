@@ -45,12 +45,6 @@ public class PagingRecyclerView extends LinearLayout {
             int totalItemCount = recyclerView.getAdapter() != null ? recyclerView.getAdapter().getItemCount() : 0;
             int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
 
-            // Hide progress bar if not reach to bottom
-            if (lastVisibleItemPosition + 1 < totalItemCount) {
-                hideLoading();
-                return;
-            }
-
             // Check if needs to paginate
             if (lastVisibleItemPosition + 1 >= itemsPerPage * page) {
                 if (paginateListener == null) {
@@ -68,6 +62,11 @@ public class PagingRecyclerView extends LinearLayout {
                 if (lastVisibleItemPosition == totalItemCount - 1) {
                     showLoading();
                 }
+            }
+
+            // Hide progress bar if not reach to bottom
+            if (lastVisibleItemPosition + 1 < totalItemCount) {
+                hideLoading();
             }
         }
     };
