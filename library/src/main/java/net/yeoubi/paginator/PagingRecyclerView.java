@@ -63,11 +63,6 @@ public class PagingRecyclerView extends LinearLayout {
                     showLoading();
                 }
             }
-
-            // Hide progress bar if not reach to bottom
-            if (lastVisibleItemPosition + 1 < totalItemCount) {
-                hideLoading();
-            }
         }
     };
 
