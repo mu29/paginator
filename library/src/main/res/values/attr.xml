@@ -9,9 +9,6 @@
         <attr name="innerClipToPadding" format="boolean"/>
         <attr name="innerLayoutAnimation" format="reference"/>
         <attr name="progressColor" format="reference"/>
-        <attr name="progressWidth" format="dimension"/>
-        <attr name="progressHeight" format="dimension"/>
-        <attr name="progressMargin" format="dimension"/>
         <attr name="waiting" format="boolean"/>
     </declare-styleable>
 </resources>

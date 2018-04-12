@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
@@ -43,6 +42,7 @@ public class PagingRecyclerView extends LinearLayout {
             }
 
             LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            int totalItemCount = recyclerView.getAdapter() != null ? recyclerView.getAdapter().getItemCount() : 0;
             int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
 
             // Check if needs to paginate
@@ -52,7 +52,56 @@ public class PagingRecyclerView extends LinearLayout {
                 }
 
                 paginateListener.onPaginate(++page);
+
+                if (lastVisibleItemPosition + 1 < totalItemCount) {
+                    hideLoading();
+                    return;
+                }
+
+                // Check if needs to show progress bar
+                if (lastVisibleItemPosition == totalItemCount - 1) {
+                    showLoading();
+                }
             }
+        }
+    };
+
+    // Hide progress bar if data changed
+    private RecyclerView.AdapterDataObserver dataObserver = new RecyclerView.AdapterDataObserver() {
+        @Override
+        public void onChanged() {
+            super.onChanged();
+            hideLoading();
+        }
+
+        @Override
+        public void onItemRangeChanged(int positionStart, int itemCount) {
+            super.onItemRangeChanged(positionStart, itemCount);
+            hideLoading();
+        }
+
+        @Override
+        public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
+            super.onItemRangeChanged(positionStart, itemCount, payload);
+            hideLoading();
+        }
+
+        @Override
+        public void onItemRangeInserted(int positionStart, int itemCount) {
+            super.onItemRangeInserted(positionStart, itemCount);
+            hideLoading();
+        }
+
+        @Override
+        public void onItemRangeRemoved(int positionStart, int itemCount) {
+            super.onItemRangeRemoved(positionStart, itemCount);
+            hideLoading();
+        }
+
+        @Override
+        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+            super.onItemRangeMoved(fromPosition, toPosition, itemCount);
+            hideLoading();
         }
     };
 
@@ -94,6 +143,9 @@ public class PagingRecyclerView extends LinearLayout {
      */
     public void bind() {
         recyclerView.addOnScrollListener(pagingScrollListener);
+        if (recyclerView.getAdapter() != null) {
+            recyclerView.getAdapter().registerAdapterDataObserver(dataObserver);
+        }
     }
 
     /**
@@ -101,6 +153,9 @@ public class PagingRecyclerView extends LinearLayout {
      */
     public void unbind() {
         recyclerView.clearOnScrollListeners();
+        if (recyclerView.getAdapter() != null) {
+            recyclerView.getAdapter().unregisterAdapterDataObserver(dataObserver);
+        }
     }
 
     /**
@@ -113,9 +168,6 @@ public class PagingRecyclerView extends LinearLayout {
         boolean clipToPadding = attributes.getBoolean(R.styleable.PagingRecyclerView_innerClipToPadding, false);
         boolean isWaiting = attributes.getBoolean(R.styleable.PagingRecyclerView_waiting, false);
         int color = attributes.getResourceId(R.styleable.PagingRecyclerView_progressColor, 0);
-        int width = attributes.getDimensionPixelOffset(R.styleable.PagingRecyclerView_progressWidth, -1);
-        int height = attributes.getDimensionPixelOffset(R.styleable.PagingRecyclerView_progressHeight, -1);
-        int margin = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_progressMargin, 0);
         int padding = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPadding, 0);
         int paddingTop = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPaddingTop, padding);
         int paddingBottom = attributes.getDimensionPixelSize(R.styleable.PagingRecyclerView_innerPaddingBottom, padding);
@@ -132,14 +184,7 @@ public class PagingRecyclerView extends LinearLayout {
         }
         setInnerClipToPadding(clipToPadding);
         setInnerPadding(paddingStart, paddingTop, paddingEnd, paddingBottom);
-        if (width > -1) {
-            setProgressWidth(width);
-        }
-        if (height > -1) {
-            setProgressHeight(height);
-        }
         setWaiting(isWaiting);
-        setProgressMargin(margin);
         attributes.recycle();
     }
 
@@ -230,39 +275,6 @@ public class PagingRecyclerView extends LinearLayout {
         if (recyclerView != null) {
             recyclerView.setLayoutAnimation(controller);
         }
-    }
-
-    public void setProgressWidth(int width) {
-        if (progressBar == null) {
-            return;
-        }
-
-        ViewGroup.LayoutParams params = progressBar.getLayoutParams();
-        params.width = width;
-        progressBar.requestLayout();
-    }
-
-    public void setProgressHeight(int height) {
-        if (progressBar == null) {
-            return;
-        }
-
-        ViewGroup.LayoutParams params = progressBar.getLayoutParams();
-        params.height = height;
-        progressBar.requestLayout();
-    }
-
-    public void setProgressMargin(int margin) {
-        if (progressBar == null) {
-            return;
-        }
-
-        ViewGroup.MarginLayoutParams params = (MarginLayoutParams) progressBar.getLayoutParams();
-        params.leftMargin = margin;
-        params.topMargin = margin;
-        params.rightMargin = margin;
-        params.bottomMargin = margin;
-        progressBar.requestLayout();
     }
 
     private void showLoading() {
