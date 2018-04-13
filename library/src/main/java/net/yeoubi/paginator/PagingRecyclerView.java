@@ -278,10 +278,14 @@ public class PagingRecyclerView extends LinearLayout {
     }
 
     private void showLoading() {
-        progressBar.setVisibility(View.VISIBLE);
+        if (recyclerView != null) {
+            recyclerView.post(() -> progressBar.setVisibility(View.VISIBLE));
+        }
     }
 
     private void hideLoading() {
-        progressBar.setVisibility(View.GONE);
+        if (recyclerView != null) {
+            recyclerView.post(() -> progressBar.setVisibility(View.GONE));
+        }
     }
 }
